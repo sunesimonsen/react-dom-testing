@@ -1,17 +1,22 @@
 {
   "name": "react-dom-test",
-  "version": "1.0.0",
-  "description":
-    "A tiny wrapper around react-addons-test-utils to make it more convinient",
+  "version": "1.0.1-0",
+  "description": "A tiny wrapper around react-addons-test-utils to make it more convinient",
   "main": "./lib/index.js",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "babel --out-dir lib --quiet src",
     "lint": "eslint .",
     "prepare": "npm run build",
     "test": "jest"
   },
-  "keywords": ["react", "testing", "DOM"],
+  "keywords": [
+    "react",
+    "testing",
+    "DOM"
+  ],
   "author": "Sune Simonsen",
   "license": "MIT",
   "devDependencies": {
