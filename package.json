@@ -11,8 +11,13 @@
     "prepare": "npm run build",
     "test": "jest"
   },
+  "bugs": "https://github.com/sunesimonsen/react-dom-testing/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunesimonsen/react-dom-testing"
+  },
   "keywords": ["react", "testing", "DOM"],
-  "author": "Sune Simonsen",
+  "author": "Sune Simonsen <sune@we-knowhow.dk>",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "6.26.0",
