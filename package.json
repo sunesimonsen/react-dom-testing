@@ -1,20 +1,21 @@
 {
   "name": "react-dom-test",
   "version": "1.0.0",
-  "description": "A tiny wrapper around react-addons-test-utils to make it more convinient",
-  "main": "index.js",
+  "description":
+    "A tiny wrapper around react-addons-test-utils to make it more convinient",
+  "main": "./lib/index.js",
+  "files": ["lib"],
   "scripts": {
+    "build": "babel --out-dir lib --quiet src",
     "lint": "eslint .",
+    "prepare": "npm run build",
     "test": "jest"
   },
-  "keywords": [
-    "react",
-    "testing",
-    "DOM"
-  ],
+  "keywords": ["react", "testing", "DOM"],
   "author": "Sune Simonsen",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-jest": "23.0.0-alpha.0",
     "babel-preset-env": "1.6.1",
