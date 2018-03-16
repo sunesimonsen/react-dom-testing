@@ -1,12 +1,14 @@
-const React = require("react");
-const PropTypes = require("prop-types");
-const unexpected = require("unexpected");
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import TestUtils from "react-dom/test-utils";
+import unexpected from "unexpected";
+import unexpectedDom from "unexpected-dom";
 
-const expect = unexpected.clone().use(require("unexpected-dom"));
+import { mount, Simulate } from "../src";
 
-const { mount } = require("..");
+const expect = unexpected.clone().use(unexpectedDom);
 
-class Hello extends React.Component {
+class Hello extends Component {
   render() {
     const { children, ...other } = this.props;
 
@@ -65,6 +67,80 @@ describe("react-dom-test", () => {
         node.querySelector("[data-test=value]").textContent,
         "to equal",
         "Jane Doe"
+      );
+    });
+  });
+  describe("Simulate", () => {
+    it("is just Simulate from react-dom/test-utils", () => {
+      expect(Simulate, "to be", TestUtils.Simulate);
+    });
+
+    class PeopleList extends Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          name: "",
+          people: []
+        };
+      }
+
+      render() {
+        const { name, people } = this.state;
+
+        return (
+          <div>
+            <ol data-test="people">
+              {people.map((person, i) => <li key={i}>{person}</li>)}
+            </ol>
+
+            <label>
+              Name:
+              <input
+                value={name}
+                onChange={e => this.setState({ name: e.target.value })}
+                data-test="name-input"
+              />
+            </label>
+            <button
+              onClick={() =>
+                this.setState(({ name, people }) => ({
+                  name: "",
+                  people: [...people, name]
+                }))
+              }
+              data-test="add-person"
+            >
+              Add
+            </button>
+          </div>
+        );
+      }
+    }
+
+    it("can be used to interact with a rendered component", () => {
+      const peopleList = mount(<PeopleList />);
+      const input = peopleList.querySelector("[data-test=name-input]");
+      const button = peopleList.querySelector("[data-test=add-person]");
+
+      input.value = "Jane Doe";
+      Simulate.change(input);
+      Simulate.click(button);
+
+      input.value = "John Doe";
+      Simulate.change(input);
+      Simulate.click(button);
+
+      expect(
+        peopleList,
+        "queried for first",
+        "[data-test=people]",
+        "to satisfy",
+        mount(
+          <ol data-test="people">
+            <li>Jane Doe</li>
+            <li>John Doe</li>
+          </ol>
+        )
       );
     });
   });

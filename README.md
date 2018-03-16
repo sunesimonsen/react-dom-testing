@@ -1,6 +1,6 @@
 # react-dom-testing
 
-A tiny wrapper around react-dom/test-utils to make it more convenient.
+A tiny wrapper around [react-dom/test-utils](https://reactjs.org/docs/test-utils.html) to make it more convenient.
 
 ## Install
 
@@ -58,6 +58,26 @@ expect(
 ```
 
 That will give you some really fancy output if it fails.
+
+## API
+
+### mount
+
+Renders a React component into the DOM and returns the DOM node.
+
+```js
+const node = mount(<Hello>Jane Doe</Hello>);
+```
+
+### Simulate
+
+This is just a re-export of the `Simulate` object from [react-dom/test-utils](https://reactjs.org/docs/test-utils.html);
+
+```js
+const node = mount(<button onClick={myHandler}>Click me!</button>);
+
+Simulate.click(node);
+```
 
 ## License
 

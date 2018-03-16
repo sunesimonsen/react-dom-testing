@@ -22,3 +22,5 @@ export function mount(component) {
 
   return ReactDom.findDOMNode(rendered);
 }
+
+export { Simulate } from "react-dom/test-utils";
