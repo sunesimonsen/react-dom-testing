@@ -1,6 +1,6 @@
 # react-dom-testing
 
-A tiny wrapper around react-addons-test-utils to make it more convenient.
+A tiny wrapper around react-dom/test-utils to make it more convenient.
 
 ## Install
 

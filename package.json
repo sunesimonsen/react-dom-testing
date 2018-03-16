@@ -2,7 +2,7 @@
   "name": "react-dom-testing",
   "version": "1.0.1-0",
   "description":
-    "A tiny wrapper around react-addons-test-utils to make it more convenient.",
+    "A tiny wrapper around react-dom/test-utils to make it more convenient.",
   "main": "./lib/index.js",
   "files": ["lib"],
   "scripts": {
