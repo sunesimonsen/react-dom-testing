@@ -1,5 +1,7 @@
 # react-dom-testing
 
+[![Build Status](https://travis-ci.org/sunesimonsen/react-dom-testing.svg?branch=master)](https://travis-ci.org/sunesimonsen/react-dom-testing)
+
 A tiny wrapper around [react-dom/test-utils](https://reactjs.org/docs/test-utils.html) to make it more convenient.
 
 ## Install
