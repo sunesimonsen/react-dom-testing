@@ -57,5 +57,15 @@ describe("react-dom-test", () => {
         ).and("to have class", "fancy");
       });
     });
+
+    it("can be used for low-level DOM testing of React components", () => {
+      const node = mount(<Hello>Jane Doe</Hello>);
+
+      expect(
+        node.querySelector("[data-test=value]").textContent,
+        "to equal",
+        "Jane Doe"
+      );
+    });
   });
 });
