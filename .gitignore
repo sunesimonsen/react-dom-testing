@@ -1,0 +1,7 @@
+/node_modules/
+/coverage/
+/build/
+/site-build/
+/test/tests.html
+/test/JasmineRunner.html
+/.nyc_output/
