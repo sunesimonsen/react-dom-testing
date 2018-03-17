@@ -4,8 +4,8 @@ import TestUtils from "react-dom/test-utils";
 
 export function mount(element) {
   const div = document.createElement('div');
-  ReactDOM.render(element, div);
-  return div;
+  ReactDom.render(element, div);
+  return div.firstChild;
 }
 
 export { Simulate } from "react-dom/test-utils";
