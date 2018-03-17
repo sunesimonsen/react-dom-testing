@@ -10,7 +10,8 @@
     "build": "babel --out-dir lib --quiet src",
     "lint": "eslint .",
     "prepare": "npm run build",
-    "test": "jest"
+    "test": "jest",
+    "ci": "npm run lint && npm test"
   },
   "bugs": "https://github.com/sunesimonsen/react-dom-testing/issues",
   "repository": {
