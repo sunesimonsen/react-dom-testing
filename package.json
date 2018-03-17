@@ -1,6 +1,6 @@
 {
   "name": "react-dom-testing",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A tiny wrapper around react-dom/test-utils to make it more convenient.",
   "main": "./lib/index.js",
   "files": [
@@ -36,16 +36,14 @@
     "eslint-plugin-prettier": "2.6.0",
     "jest": "22.4.2",
     "prettier": "1.11.1",
+    "prop-types": "15.6.1",
     "react": "16.2.0",
     "react-dom": "16.2.0",
     "unexpected": "10.37.2",
     "unexpected-dom": "4.0.0"
   },
   "peerDependencies": {
-    "react": "15 || 16",
-    "react-dom": "15 || 16"
-  },
-  "dependencies": {
-    "prop-types": "^15.6.1"
+    "react": "^15.5.4 || 16",
+    "react-dom": "^15.5.4 || 16"
   }
 }

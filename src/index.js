@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import ReactDom from "react-dom";
 import TestUtils from "react-dom/test-utils";
 
