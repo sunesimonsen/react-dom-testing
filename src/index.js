@@ -7,3 +7,4 @@ export function mount(element) {
 }
 
 export { Simulate } from "react-dom/test-utils";
+export { default as Ignore } from "./Ignore";
