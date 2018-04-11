@@ -4,7 +4,7 @@ import TestUtils from "react-dom/test-utils";
 import unexpected from "unexpected";
 import unexpectedDom from "unexpected-dom";
 
-import { mount, Simulate } from "../src";
+import { mount, Simulate, Ignore } from "../src";
 
 const expect = unexpected.clone().use(unexpectedDom);
 
@@ -48,6 +48,17 @@ describe("react-dom-test", () => {
       );
     });
 
+    it("does not add a data-reactroot attribute", () => {
+      const jane = mount(<Hello>Jane Doe</Hello>);
+      const john = mount(<Hello>John Doe</Hello>);
+
+      expect(
+        [jane, john],
+        "to have items satisfying",
+        expect.it("not to have attribute", "data-reactroot")
+      );
+    });
+
     describe("on a stateless component", () => {
       it("renders the given component into the dom and returns the node", () => {
         expect(
@@ -70,6 +81,7 @@ describe("react-dom-test", () => {
       );
     });
   });
+
   describe("Simulate", () => {
     it("is just Simulate from react-dom/test-utils", () => {
       expect(Simulate, "to be", TestUtils.Simulate);
@@ -140,6 +152,21 @@ describe("react-dom-test", () => {
             <li>Jane Doe</li>
             <li>John Doe</li>
           </ol>
+        )
+      );
+    });
+  });
+
+  describe("Ignore", () => {
+    it("can be used to render an ignore comment that unexpected-dom will understand", () => {
+      expect(
+        mount(<Hello>Jane Doe</Hello>),
+        "to satisfy",
+        mount(
+          <div>
+            <Ignore />
+            <div className="value">Jane Doe</div>
+          </div>
         )
       );
     });
