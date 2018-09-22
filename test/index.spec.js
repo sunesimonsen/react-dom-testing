@@ -147,6 +147,32 @@ describe("react-dom-test", () => {
         )
       );
     });
+
+    it("fails if it can't find the even target", () => {
+      const peopleList = mount(<PeopleList />);
+
+      expect(
+        () => {
+          simulate(peopleList, [
+            {
+              type: "change",
+              target: "[data-test=name-input]",
+              value: "Jane Doe"
+            },
+            { type: "click", target: "[data-test=add-persons]" },
+            {
+              type: "change",
+              target: "[data-test=name-input]",
+              value: "John Doe"
+            },
+            { type: "click", target: "[data-test=add-person]" }
+          ]);
+        },
+        "to throw",
+        `Could not trigger click on '[data-test=add-persons]' in
+<div><ol data-test="people"></ol><label>Name:<input value="Jane Doe" data-test="name-input"></label><button data-test="add-person">Add</button></div>`
+      );
+    });
   });
 
   describe("Ignore", () => {
