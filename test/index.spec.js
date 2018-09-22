@@ -148,6 +148,22 @@ describe("react-dom-test", () => {
       );
     });
 
+    it("supports shortcut forms for events", () => {
+      const button = mount(<input type="checkbox" />);
+
+      simulate(button, [
+        "focus",
+        {
+          type: "keyDown",
+          data: {
+            which: 13
+          }
+        }
+      ]);
+
+      expect(button, "to have attributes", { value: "on" });
+    });
+
     it("fails if it can't find the even target", () => {
       const peopleList = mount(<PeopleList />);
 
