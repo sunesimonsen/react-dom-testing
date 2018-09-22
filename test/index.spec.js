@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import TestUtils from "react-dom/test-utils";
 import unexpected from "unexpected";
 import unexpectedDom from "unexpected-dom";
 
-import { mount, Simulate, Ignore } from "../src";
+import { mount, simulate, Ignore } from "../src";
 
 const expect = unexpected.clone().use(unexpectedDom);
 
@@ -82,11 +81,7 @@ describe("react-dom-test", () => {
     });
   });
 
-  describe("Simulate", () => {
-    it("is just Simulate from react-dom/test-utils", () => {
-      expect(Simulate, "to be", TestUtils.Simulate);
-    });
-
+  describe("simulate", () => {
     class PeopleList extends Component {
       constructor(props) {
         super(props);
@@ -131,16 +126,13 @@ describe("react-dom-test", () => {
 
     it("can be used to interact with a rendered component", () => {
       const peopleList = mount(<PeopleList />);
-      const input = peopleList.querySelector("[data-test=name-input]");
-      const button = peopleList.querySelector("[data-test=add-person]");
 
-      input.value = "Jane Doe";
-      Simulate.change(input);
-      Simulate.click(button);
-
-      input.value = "John Doe";
-      Simulate.change(input);
-      Simulate.click(button);
+      simulate(peopleList, [
+        { type: "change", target: "[data-test=name-input]", value: "Jane Doe" },
+        { type: "click", target: "[data-test=add-person]" },
+        { type: "change", target: "[data-test=name-input]", value: "John Doe" },
+        { type: "click", target: "[data-test=add-person]" }
+      ]);
 
       expect(
         peopleList,
