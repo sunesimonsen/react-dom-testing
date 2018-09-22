@@ -42,7 +42,7 @@ assert.equal(
 
 You can use plain DOM or any DOM query library you want. You can use any fancy assertion library that have assertions for the DOM or just stick to plain asserts, you decide.
 
-Here is the above example using [unexpected-dom](https://github.com/munter/unexpected-dom/):
+Here is the above example using [unexpected-dom](https://github.com/unexpectedjs/unexpected-dom/):
 
 ```js
 import expect from 'unexpected';
