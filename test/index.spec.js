@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import TestUtils from "react-dom/test-utils";
+import sinon from "sinon";
 import unexpected from "unexpected";
 import unexpectedDom from "unexpected-dom";
+import unexpectedSinon from "unexpected-sinon";
 
-import { mount, Simulate, Ignore } from "../src";
+import { mount, simulate, Ignore } from "../src";
 
-const expect = unexpected.clone().use(unexpectedDom);
+const expect = unexpected
+  .clone()
+  .use(unexpectedDom)
+  .use(unexpectedSinon);
 
 class Hello extends Component {
   render() {
@@ -82,9 +86,39 @@ describe("react-dom-test", () => {
     });
   });
 
-  describe("Simulate", () => {
-    it("is just Simulate from react-dom/test-utils", () => {
-      expect(Simulate, "to be", TestUtils.Simulate);
+  describe("simulate", () => {
+    it("accepts an event type as a string", () => {
+      const handler = sinon.spy();
+      const component = mount(<button onClick={handler}>Click me!</button>);
+
+      simulate(component, "click");
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "click" });
+      });
+    });
+
+    it("accepts an array of event type as a strings", () => {
+      const handler = sinon.spy();
+      const component = mount(<button onClick={handler}>Click me!</button>);
+
+      simulate(component, ["click", "click"]);
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "click" });
+        handler({ type: "click" });
+      });
+    });
+
+    it("accepts events without a target", () => {
+      const handler = sinon.spy();
+      const component = mount(<button onClick={handler}>Click me!</button>);
+
+      simulate(component, { type: "click" });
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "click" });
+      });
     });
 
     class PeopleList extends Component {
@@ -131,16 +165,13 @@ describe("react-dom-test", () => {
 
     it("can be used to interact with a rendered component", () => {
       const peopleList = mount(<PeopleList />);
-      const input = peopleList.querySelector("[data-test=name-input]");
-      const button = peopleList.querySelector("[data-test=add-person]");
 
-      input.value = "Jane Doe";
-      Simulate.change(input);
-      Simulate.click(button);
-
-      input.value = "John Doe";
-      Simulate.change(input);
-      Simulate.click(button);
+      simulate(peopleList, [
+        { type: "change", target: "[data-test=name-input]", value: "Jane Doe" },
+        { type: "click", target: "[data-test=add-person]" },
+        { type: "change", target: "[data-test=name-input]", value: "John Doe" },
+        { type: "click", target: "[data-test=add-person]" }
+      ]);
 
       expect(
         peopleList,
@@ -153,6 +184,56 @@ describe("react-dom-test", () => {
             <li>John Doe</li>
           </ol>
         )
+      );
+    });
+
+    it("supports shortcut forms for events", () => {
+      const button = mount(<input type="checkbox" />);
+
+      simulate(button, [
+        "focus",
+        {
+          type: "keyDown",
+          data: {
+            which: 13
+          }
+        }
+      ]);
+
+      expect(button, "to have attributes", { value: "on" });
+    });
+
+    it("fails if it can't find the even target", () => {
+      const peopleList = mount(<PeopleList />);
+
+      expect(
+        () => {
+          simulate(peopleList, [
+            {
+              type: "change",
+              target: "[data-test=name-input]",
+              value: "Jane Doe"
+            },
+            { type: "click", target: "[data-test=add-persons]" },
+            {
+              type: "change",
+              target: "[data-test=name-input]",
+              value: "John Doe"
+            },
+            { type: "click", target: "[data-test=add-person]" }
+          ]);
+        },
+        "to throw",
+        `Could not trigger click on '[data-test=add-persons]' in
+<div>
+  <ol data-test="people">
+  </ol>
+  <label>
+    Name:
+    <input value="Jane Doe" data-test="name-input">
+  </label>
+  <button data-test="add-person">Add</button>
+</div>`
       );
     });
   });
