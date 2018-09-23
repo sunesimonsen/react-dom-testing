@@ -83,7 +83,7 @@ following form:
 {
   type: 'change', // The event type
   value: 'My value', // will be set on target when specified
-  target: 'input', // an optinal CSS selector specifying the target
+  target: 'input', // an optional CSS selector specifying the target
 }
 ```
 
