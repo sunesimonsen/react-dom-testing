@@ -1,11 +1,9 @@
 {
   "name": "react-dom-testing",
   "version": "1.4.0",
-  "description": "A tiny wrapper around react-dom/test-utils to make it more convenient.",
+  "description": "A minimal React DOM testing utility",
   "main": "./lib/index.js",
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "scripts": {
     "build": "babel --out-dir lib --quiet src",
     "lint": "eslint .",
@@ -18,11 +16,7 @@
     "type": "git",
     "url": "https://github.com/sunesimonsen/react-dom-testing"
   },
-  "keywords": [
-    "react",
-    "testing",
-    "DOM"
-  ],
+  "keywords": ["react", "testing", "DOM"],
   "author": "Sune Simonsen <sune@we-knowhow.dk>",
   "license": "MIT",
   "devDependencies": {
@@ -40,8 +34,10 @@
     "prop-types": "15.6.1",
     "react": "16.2.0",
     "react-dom": "16.2.0",
+    "sinon": "6.3.4",
     "unexpected": "10.37.2",
-    "unexpected-dom": "4.5.0"
+    "unexpected-dom": "4.5.0",
+    "unexpected-sinon": "10.10.1"
   },
   "peerDependencies": {
     "react": "^15.5.4 || 16",

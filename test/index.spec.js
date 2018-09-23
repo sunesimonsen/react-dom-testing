@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import sinon from "sinon";
 import unexpected from "unexpected";
 import unexpectedDom from "unexpected-dom";
+import unexpectedSinon from "unexpected-sinon";
 
 import { mount, simulate, Ignore } from "../src";
 
-const expect = unexpected.clone().use(unexpectedDom);
+const expect = unexpected
+  .clone()
+  .use(unexpectedDom)
+  .use(unexpectedSinon);
 
 class Hello extends Component {
   render() {
@@ -82,6 +87,40 @@ describe("react-dom-test", () => {
   });
 
   describe("simulate", () => {
+    it("accepts an event type as a string", () => {
+      const handler = sinon.spy();
+      const component = mount(<button onClick={handler}>Click me!</button>);
+
+      simulate(component, "click");
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "click" });
+      });
+    });
+
+    it("accepts an array of event type as a strings", () => {
+      const handler = sinon.spy();
+      const component = mount(<button onClick={handler}>Click me!</button>);
+
+      simulate(component, ["click", "click"]);
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "click" });
+        handler({ type: "click" });
+      });
+    });
+
+    it("accepts events without a target", () => {
+      const handler = sinon.spy();
+      const component = mount(<button onClick={handler}>Click me!</button>);
+
+      simulate(component, { type: "click" });
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "click" });
+      });
+    });
+
     class PeopleList extends Component {
       constructor(props) {
         super(props);
