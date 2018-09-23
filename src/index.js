@@ -1,5 +1,6 @@
 import ReactDom from "react-dom";
 import { Simulate } from "react-dom/test-utils";
+import domspace from "domspace";
 
 export function mount(element) {
   const div = document.createElement("div");
@@ -19,7 +20,7 @@ export function simulate(rootElement, events) {
         if (!target) {
           throw new Error(
             `Could not trigger ${event.type} on '${event.target}' in\n${
-              rootElement.outerHTML
+              domspace(rootElement.cloneNode(true)).outerHTML
             }`
           );
         }

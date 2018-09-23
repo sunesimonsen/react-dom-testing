@@ -186,7 +186,15 @@ describe("react-dom-test", () => {
         },
         "to throw",
         `Could not trigger click on '[data-test=add-persons]' in
-<div><ol data-test="people"></ol><label>Name:<input value="Jane Doe" data-test="name-input"></label><button data-test="add-person">Add</button></div>`
+<div>
+  <ol data-test="people">
+  </ol>
+  <label>
+    Name:
+    <input value="Jane Doe" data-test="name-input">
+  </label>
+  <button data-test="add-person">Add</button>
+</div>`
       );
     });
   });
