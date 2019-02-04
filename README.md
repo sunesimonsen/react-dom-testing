@@ -71,6 +71,17 @@ Renders a React component into the DOM and returns the DOM node.
 const node = mount(<Hello>Jane Doe</Hello>);
 ```
 
+### unmount
+
+Unmount a mounted component from the DOM. 
+
+You normally don't need to unmount components, it is only when your component has some side-effect that messes with the environment, like writing to the HTML body the unmount need to run to clean up. That of cause depends on the component actually cleaning up after itself.
+
+```js
+const node = mount(<Hello>Jane Doe</Hello>);
+unmount(node);
+```
+
 ### simulate
 
 A function to simulate one or more events using `Simulate` object from
