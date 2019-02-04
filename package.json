@@ -37,13 +37,13 @@
     "eslint-plugin-prettier": "2.6.0",
     "jest": "23.6.0",
     "prettier": "1.11.1",
-    "prop-types": "15.6.1",
+    "prop-types": "15.6.2",
     "react": "16.2.0",
-    "react-dom": "16.2.0",
-    "sinon": "6.3.4",
-    "unexpected": "10.37.2",
-    "unexpected-dom": "4.5.0",
-    "unexpected-sinon": "10.10.1"
+    "react-dom": "16.2.1",
+    "sinon": "7.2.3",
+    "unexpected": "11.0.1",
+    "unexpected-dom": "4.11.1",
+    "unexpected-sinon": "10.11.0"
   },
   "peerDependencies": {
     "react": "^15.5.4 || 16",
