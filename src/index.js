@@ -3,9 +3,13 @@ import { Simulate } from "react-dom/test-utils";
 import domspace from "domspace";
 
 export function mount(element) {
-  const div = document.createElement("div");
-  ReactDom.render(element, div);
-  return div.firstChild;
+  const container = document.createElement("div");
+  ReactDom.render(element, container);
+  return container.firstChild;
+}
+
+export function unmount(element) {
+  ReactDom.unmountComponentAtNode(element.parentNode);
 }
 
 export function simulate(rootElement, events) {

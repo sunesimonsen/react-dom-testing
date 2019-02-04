@@ -5,7 +5,7 @@ import unexpected from "unexpected";
 import unexpectedDom from "unexpected-dom";
 import unexpectedSinon from "unexpected-sinon";
 
-import { mount, simulate, Ignore } from "../src";
+import { mount, unmount, simulate, Ignore } from "../src";
 
 const expect = unexpected
   .clone()
@@ -24,6 +24,22 @@ class Hello extends Component {
         </div>
       </div>
     );
+  }
+}
+
+class DomFiddler extends Component {
+  componentWillMount() {
+    this.div = document.createElement("div");
+    this.div.setAttribute("data-test-id", "portal");
+    document.body.appendChild(this.div);
+  }
+
+  componentWillUnmount() {
+    document.body.removeChild(this.div);
+  }
+
+  render() {
+    return <div />;
   }
 }
 
@@ -82,6 +98,26 @@ describe("react-dom-test", () => {
         node.querySelector("[data-test=value]").textContent,
         "to equal",
         "Jane Doe"
+      );
+    });
+  });
+
+  describe("unmount", () => {
+    it("unmounts a mounted component", () => {
+      const component = mount(<DomFiddler />);
+
+      expect(
+        document.body,
+        "to contain elements matching",
+        "[data-test-id=portal]"
+      );
+
+      unmount(component);
+
+      expect(
+        document.body,
+        "to contain no elements matching",
+        "[data-test-id=portal]"
       );
     });
   });
