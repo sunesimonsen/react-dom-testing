@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import sinon from "sinon";
 import unexpected from "unexpected";
@@ -54,6 +54,18 @@ const Stateless = ({ className, children }) => (
 Stateless.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string
+};
+
+const Checkbox = () => {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    <input
+      type="checkbox"
+      checked={checked}
+      onChange={event => setChecked(!checked)}
+    />
+  );
 };
 
 describe("react-dom-test", () => {
@@ -224,22 +236,14 @@ describe("react-dom-test", () => {
     });
 
     it("supports shortcut forms for events", () => {
-      const button = mount(<input type="checkbox" />);
+      const checkbox = mount(<Checkbox />);
 
-      simulate(button, [
-        "focus",
-        {
-          type: "keyDown",
-          data: {
-            which: 13
-          }
-        }
-      ]);
+      simulate(checkbox, "change");
 
-      expect(button, "to have attributes", { value: "on" });
+      expect(checkbox, "to match", ":checked");
     });
 
-    it("fails if it can't find the even target", () => {
+    it("fails if it can't find the event target", () => {
       const peopleList = mount(<PeopleList />);
 
       expect(
@@ -266,7 +270,7 @@ describe("react-dom-test", () => {
   </ol>
   <label>
     Name:
-    <input value="Jane Doe" data-test="name-input">
+    <input data-test="name-input" value="Jane Doe">
   </label>
   <button data-test="add-person">Add</button>
 </div>`

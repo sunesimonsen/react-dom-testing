@@ -1,10 +1,17 @@
 import ReactDom from "react-dom";
-import { Simulate } from "react-dom/test-utils";
+import { act, Simulate } from "react-dom/test-utils";
 import domspace from "domspace";
 
 export function mount(element) {
   const container = document.createElement("div");
-  ReactDom.render(element, container);
+  if (act) {
+    act(() => {
+      ReactDom.render(element, container);
+    });
+  } else {
+    ReactDom.render(element, container);
+  }
+
   return container.firstChild;
 }
 
@@ -42,7 +49,13 @@ export function simulate(rootElement, events) {
         );
       }
 
-      Simulate[event.type](target, event.data);
+      if (act) {
+        act(() => {
+          Simulate[event.type](target, event.data);
+        });
+      } else {
+        Simulate[event.type](target, event.data);
+      }
     });
 }
 
