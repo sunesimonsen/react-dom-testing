@@ -20,11 +20,19 @@ export function unmount(element) {
 }
 
 export function simulate(rootElement, events) {
+  if (arguments.length !== 2) {
+    throw new Error("simulate takes exactly two arguments");
+  }
+
   []
     .concat(events)
     .map(event => (typeof event === "string" ? { type: event } : event))
     .forEach(event => {
       let target = rootElement;
+
+      if (!event.type) {
+        throw new Error("All events must have a type");
+      }
 
       if (event.target) {
         target = rootElement.querySelector(event.target);

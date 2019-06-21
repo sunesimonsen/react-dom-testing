@@ -243,6 +243,42 @@ describe("react-dom-test", () => {
       expect(checkbox, "to match", ":checked");
     });
 
+    it("fails if not given any events", () => {
+      const component = mount(<button>Click me!</button>);
+
+      expect(
+        () => {
+          simulate(component);
+        },
+        "to throw",
+        "simulate takes exactly two arguments"
+      );
+    });
+
+    it("fails if not given more then 2 arguments", () => {
+      const component = mount(<button>Click me!</button>);
+
+      expect(
+        () => {
+          simulate(component, "click", "click");
+        },
+        "to throw",
+        "simulate takes exactly two arguments"
+      );
+    });
+
+    it("fails if not all events have a type", () => {
+      const component = mount(<button>Click me!</button>);
+
+      expect(
+        () => {
+          simulate(component, ["click", {}]);
+        },
+        "to throw",
+        "All events must have a type"
+      );
+    });
+
     it("fails if it can't find the event target", () => {
       const peopleList = mount(<PeopleList />);
 
