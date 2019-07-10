@@ -1,11 +1,15 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import sinon from "sinon";
 import unexpected from "unexpected";
 import unexpectedDom from "unexpected-dom";
 import unexpectedSinon from "unexpected-sinon";
+import fetchAnswer from "./fetchAnswer";
+import FakePromise from "fake-promise";
 
-import { mount, unmount, simulate, Ignore } from "../src";
+jest.mock("./fetchAnswer");
+
+import { act, mount, unmount, simulate, Ignore } from "../src";
 
 const expect = unexpected
   .clone()
@@ -68,7 +72,52 @@ const Checkbox = () => {
   );
 };
 
-describe("react-dom-test", () => {
+const DelayedAnswer = () => {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsReady(true);
+    }, 100);
+  }, []);
+
+  return <div className="answer">{isReady ? "42" : "Waiting..."}</div>;
+};
+
+const PromiseGate = {
+  promises: [],
+
+  register: promise => {
+    PromiseGate.promises.push(promise);
+  }
+};
+
+const PromisedAnswer = () => {
+  const [answer, setAnswer] = useState(null);
+
+  useEffect(() => {
+    fetchAnswer().then(answer => {
+      setAnswer(answer);
+    });
+  }, []);
+
+  return <div className="answer">{answer || "Waiting..."}</div>;
+};
+
+describe("react-dom-testing", () => {
+  let clock;
+  let fakePromise;
+  beforeEach(() => {
+    fakePromise = new FakePromise();
+    clock = sinon.useFakeTimers();
+    fetchAnswer.mockImplementation(() => fakePromise);
+  });
+
+  afterEach(() => {
+    clock.restore();
+    jest.restoreAllMocks();
+  });
+
   describe("mount", () => {
     it("renders the given component into the dom and returns the node", () => {
       expect(
@@ -327,5 +376,29 @@ describe("react-dom-test", () => {
         )
       );
     });
+  });
+
+  it("supports delayed updates", () => {
+    const component = mount(<DelayedAnswer />);
+
+    expect(component, "to have text", "Waiting...");
+
+    act(() => {
+      clock.tick(100);
+    });
+
+    expect(component, "to have text", "42");
+  });
+
+  it("supports asynchronous components", () => {
+    const component = mount(<PromisedAnswer />);
+
+    expect(component, "to have text", "Waiting...");
+
+    act(() => {
+      fakePromise.resolve("wat");
+    });
+
+    expect(component, "to have text", "wat");
   });
 });
