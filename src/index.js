@@ -67,5 +67,5 @@ export function simulate(rootElement, events) {
     });
 }
 
-export { Simulate } from "react-dom/test-utils";
+export { act, Simulate } from "react-dom/test-utils";
 export { default as Ignore } from "./Ignore";

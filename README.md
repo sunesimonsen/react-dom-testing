@@ -193,6 +193,28 @@ expect(
 );
 ```
 
+### act
+
+This is just the https://reactjs.org/docs/test-utils.html#act
+
+`act` is useful when you need to force a state transition like resolving a mocked promise:
+
+```js
+it("supports asynchronous components", () => {
+  const component = mount(<PromisedAnswer />);
+
+  expect(component, "to have text", "Waiting...");
+
+  act(() => {
+    fakePromise.resolve("wat");
+  });
+
+  expect(component, "to have text", "wat");
+});
+```
+
+See the tests for more details.
+
 ## License
 
 [MIT © Sune Simonsen](./LICENSE)

@@ -1,5 +1,8 @@
 module.exports = {
   extends: ["pretty-standard"],
+  globals: {
+    jest: false
+  },
   plugins: ["prettier", "import"],
   rules: {
     "prettier/prettier": "error",
