@@ -36,7 +36,9 @@
     "eslint-plugin-import": "2.9.0",
     "eslint-plugin-prettier": "2.6.0",
     "fake-promise": "2.3.2",
+    "fetch-mock": "7.3.9",
     "jest": "23.6.0",
+    "node-fetch": "2.6.0",
     "prettier": "1.11.1",
     "prop-types": "15.6.2",
     "react": "16.9.0",
@@ -44,7 +46,8 @@
     "sinon": "7.2.3",
     "unexpected": "11.0.1",
     "unexpected-dom": "4.11.1",
-    "unexpected-sinon": "10.11.0"
+    "unexpected-sinon": "10.11.0",
+    "whatwg-fetch": "3.0.0"
   },
   "peerDependencies": {
     "react": "^15.5.4 || 16",

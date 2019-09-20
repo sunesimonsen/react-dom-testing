@@ -6,6 +6,8 @@ import unexpectedDom from "unexpected-dom";
 import unexpectedSinon from "unexpected-sinon";
 import fetchAnswer from "./fetchAnswer";
 import FakePromise from "fake-promise";
+import "whatwg-fetch";
+import fetchMock from "fetch-mock";
 
 jest.mock("./fetchAnswer");
 
@@ -400,5 +402,32 @@ describe("react-dom-testing", () => {
     });
 
     expect(component, "to have text", "wat");
+  });
+
+  it("supports components that makes requests to a mocked network", async () => {
+    const NetworkComponent = () => {
+      const [message, setMessage] = useState("Waiting...");
+      useEffect(() => {
+        fetch("/testing.json")
+          .then(res => res.json())
+          .then(({ message }) => {
+            setMessage(message);
+          });
+      }, []);
+
+      return <div data-test-id="message">{message}</div>;
+    };
+
+    fetchMock.getOnce("/testing.json", {
+      message: "Hello from the network"
+    });
+
+    const component = mount(<NetworkComponent />);
+
+    expect(component, "to have text", "Waiting...");
+
+    await act(() => fetchMock.flush(true));
+
+    expect(component, "to have text", "Hello from the network");
   });
 });
