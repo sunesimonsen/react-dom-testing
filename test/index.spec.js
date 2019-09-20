@@ -32,7 +32,7 @@ class Hello extends Component {
 }
 
 class DomFiddler extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.div = document.createElement("div");
     this.div.setAttribute("data-test-id", "portal");
     document.body.appendChild(this.div);
