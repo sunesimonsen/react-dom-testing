@@ -163,6 +163,28 @@ describe("react-dom-testing", () => {
         "Jane Doe"
       );
     });
+
+    describe("when given a React fragment", () => {
+      it("returns a HTML document fragment", () => {
+        const Fragmented = () => (
+          <React.Fragment>
+            <h1>Fragmentation</h1>
+            <p>Everything is just so fragmented</p>
+          </React.Fragment>
+        );
+
+        expect(
+          mount(<Fragmented />),
+          "to satisfy",
+          mount(
+            <React.Fragment>
+              <h1>Fragmentation</h1>
+              <p>Everything is just so fragmented</p>
+            </React.Fragment>
+          )
+        ).and("to be a", "DOMDocumentFragment");
+      });
+    });
   });
 
   describe("unmount", () => {
