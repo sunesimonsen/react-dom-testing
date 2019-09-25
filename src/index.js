@@ -12,7 +12,19 @@ export function mount(element) {
     ReactDom.render(element, container);
   }
 
-  return container.firstChild;
+  const childNodes = container.childNodes;
+
+  if (childNodes.length === 1) {
+    return childNodes[0];
+  } else {
+    const documentFragment = document.createDocumentFragment();
+
+    for (let i = 0; i < childNodes.length; i += 1) {
+      documentFragment.appendChild(childNodes[i].cloneNode(true));
+    }
+
+    return documentFragment;
+  }
 }
 
 export function unmount(element) {
