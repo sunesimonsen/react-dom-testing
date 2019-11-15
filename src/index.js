@@ -14,7 +14,9 @@ export function mount(element) {
 
   const childNodes = container.childNodes;
 
-  if (childNodes.length === 1) {
+  if (childNodes.length === 0) {
+    return null;
+  } else if (childNodes.length === 1) {
     return childNodes[0];
   } else {
     const documentFragment = document.createDocumentFragment();
