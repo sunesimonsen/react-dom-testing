@@ -187,6 +187,14 @@ describe("react-dom-testing", () => {
     });
   });
 
+  describe("when given an empty React fragment", () => {
+    it("returns null", () => {
+      const Fragmented = () => <React.Fragment />;
+
+      expect(mount(<Fragmented />), "to be null");
+    });
+  });
+
   describe("unmount", () => {
     it("unmounts a mounted component", () => {
       const component = mount(<DomFiddler />);
