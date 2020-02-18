@@ -2,8 +2,8 @@ import ReactDom from "react-dom";
 import { act, Simulate } from "react-dom/test-utils";
 import domspace from "domspace";
 
-export function mount(element) {
-  const container = document.createElement("div");
+export function mount(element, options = {}) {
+  const container = options.container || document.createElement("div");
   if (act) {
     act(() => {
       ReactDom.render(element, container);

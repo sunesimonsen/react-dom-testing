@@ -185,6 +185,25 @@ describe("react-dom-testing", () => {
         );
       });
     });
+
+    describe("when given a custom wrapper element", () => {
+      beforeEach(() => {
+        sinon.spy(console, "error");
+      });
+      afterEach(() => {
+        console.error.restore();
+      });
+
+      it("can render elements which are not div-nestable without warning", () => {
+        const tableRow = document.createElement("tr");
+        const tableCell = mount(<td>Stuff</td>, { container: tableRow });
+        expect(console.error, "was not called");
+        expect(tableCell, "to satisfy", {
+          name: "td",
+          children: ["Stuff"]
+        });
+      });
+    });
   });
 
   describe("when given an empty React fragment", () => {
