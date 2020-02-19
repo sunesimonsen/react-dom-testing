@@ -186,7 +186,7 @@ describe("react-dom-testing", () => {
       });
     });
 
-    describe("when given a custom wrapper element", () => {
+    describe("when given a custom wrapper", () => {
       beforeEach(() => {
         sinon.spy(console, "error");
       });
@@ -194,9 +194,18 @@ describe("react-dom-testing", () => {
         console.error.restore();
       });
 
-      it("can render elements which are not div-nestable without warning", () => {
+      it("can use a custom wrapper element to avoid nesting warnings", () => {
         const tableRow = document.createElement("tr");
         const tableCell = mount(<td>Stuff</td>, { container: tableRow });
+        expect(console.error, "was not called");
+        expect(tableCell, "to satisfy", {
+          name: "td",
+          children: ["Stuff"]
+        });
+      });
+
+      it("can use a custom wrapper tag name to avoid nesting warnings", () => {
+        const tableCell = mount(<td>Stuff</td>, { tagName: "tr" });
         expect(console.error, "was not called");
         expect(tableCell, "to satisfy", {
           name: "td",

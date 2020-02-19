@@ -2,8 +2,20 @@ import ReactDom from "react-dom";
 import { act, Simulate } from "react-dom/test-utils";
 import domspace from "domspace";
 
-export function mount(element, options = {}) {
-  const container = options.container || document.createElement("div");
+const resolveMountOptions = (options = {}) => {
+  const setup = {};
+  if (options.tagName) {
+    setup.container = document.createElement(options.tagName);
+  } else if (options.container) {
+    setup.container = options.container;
+  } else {
+    setup.container = document.createElement("div");
+  }
+  return setup;
+};
+
+export function mount(element, options) {
+  const { container } = resolveMountOptions(options);
   if (act) {
     act(() => {
       ReactDom.render(element, container);
