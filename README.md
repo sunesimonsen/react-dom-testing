@@ -71,6 +71,21 @@ Renders a React component into the DOM and returns the DOM node.
 const node = mount(<Hello>Jane Doe</Hello>);
 ```
 
+In case you want to specify the container element that your component will be
+rendered into, you can do that the following way:
+
+``` js
+const node = mount(<Hello>Jane Doe</Hello>, { container: 'span' });
+```
+
+or
+
+``` js
+const node = mount(<Hello>Jane Doe</Hello>, {
+  container: document.createElement('span')
+});
+```
+
 ### unmount
 
 Unmount a mounted component from the DOM. 

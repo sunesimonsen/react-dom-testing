@@ -2,22 +2,21 @@ import ReactDom from "react-dom";
 import { act, Simulate } from "react-dom/test-utils";
 import domspace from "domspace";
 
-const resolveMountOptions = (options = {}) => {
-  const setup = {};
-  if (options.container) {
-    if (typeof options.container === "string") {
-      setup.container = document.createElement(options.container);
-    } else {
-      setup.container = options.container;
-    }
-  } else {
-    setup.container = document.createElement("div");
+const getContainer = ({ container }) => {
+  if (typeof container === "string") {
+    return document.createElement(container);
   }
-  return setup;
+
+  if (container) {
+    return container;
+  }
+
+  return document.createElement("div");
 };
 
-export function mount(element, options) {
-  const { container } = resolveMountOptions(options);
+export function mount(element, options = {}) {
+  const container = getContainer(options);
+
   if (act) {
     act(() => {
       ReactDom.render(element, container);
