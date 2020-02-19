@@ -205,7 +205,7 @@ describe("react-dom-testing", () => {
       });
 
       it("can use a custom wrapper tag name to avoid nesting warnings", () => {
-        const tableCell = mount(<td>Stuff</td>, { tagName: "tr" });
+        const tableCell = mount(<td>Stuff</td>, { container: "tr" });
         expect(console.error, "was not called");
         expect(tableCell, "to satisfy", {
           name: "td",

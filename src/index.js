@@ -4,10 +4,12 @@ import domspace from "domspace";
 
 const resolveMountOptions = (options = {}) => {
   const setup = {};
-  if (options.tagName) {
-    setup.container = document.createElement(options.tagName);
-  } else if (options.container) {
-    setup.container = options.container;
+  if (options.container) {
+    if (typeof options.container === "string") {
+      setup.container = document.createElement(options.container);
+    } else {
+      setup.container = options.container;
+    }
   } else {
     setup.container = document.createElement("div");
   }
