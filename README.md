@@ -102,45 +102,34 @@ unmount(node);
 A function to simulate one or more events using `Simulate` object from
 [react-dom/test-utils](https://reactjs.org/docs/test-utils.html).
 
-The function takes an array of events or a single event. Each event has the
-following form:
-
 ```js
-{
-  type: 'change', // The event type
-  value: 'My value', // will be set on target when specified
-  target: 'input', // an optional CSS selector specifying the target
-}
-```
-
-You can also specify event data for
-[Simulate](https://reactjs.org/docs/test-utils.html#simulate):
-
-```js#evaluate:false
-{
-  type: "keyDown",
-  target: "input",
-  data: {
-    keyCode: 13
-  }
-}
+simulate(element)
+  .<event>(<target selector>)
+  .<event>(<event options>)
+  .<event>(<target selector>, <event options>)
 ```
 
 If you don't specify a target, the event will be issued on the root element of
 the given component.
 
-I case you just want to specify the type, you can just give a string instead of
-an event object:
+```js
+simulate(element).click()
+```
+
+If you want to click a target specified by the given selector:
+
+``` js
+simulate(element).click('[data-test-id=click-me]')
+```
+
+You can also specify event data for
+[Simulate](https://reactjs.org/docs/test-utils.html#simulate):
 
 ```js
-const component = mount(<button onClick={myHandler}>Click me!</button>);
-
-// Simulate one click
-simulate(component, 'click');
-
-// Simulate two clicks
-simulate(component, ['click', 'click']);
+simulate(element).keyDown("input", { keyCode: 13 })
 ```
+
+Example:
 
 ```js
 class PeopleList extends Component {
@@ -187,12 +176,11 @@ class PeopleList extends Component {
 
 const peopleList = mount(<PeopleList />);
 
-simulate(peopleList, [
-  { type: "change", target: "[data-test=name-input]", value: "Jane Doe" },
-  { type: "click", target: "[data-test=add-person]" },
-  { type: "change", target: "[data-test=name-input]", value: "John Doe" },
-  { type: "click", target: "[data-test=add-person]" }
-]);
+simulate(peopleList)
+  .change("[data-test=name-input]", { value: "Jane Doe" })
+  .click("[data-test=add-persons]")
+  .change("[data-test=name-input]", { value: "John Doe" })
+  .click("[data-test=add-person]");
 
 expect(
   peopleList,

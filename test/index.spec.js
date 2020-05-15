@@ -244,6 +244,200 @@ describe("react-dom-testing", () => {
   });
 
   describe("simulate", () => {
+    it("handles events without arguments", () => {
+      const handler = sinon.spy();
+      const component = mount(<button onClick={handler}>Click me!</button>);
+
+      simulate(component).click();
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "click" });
+      });
+    });
+
+    it("accepts a target selector", () => {
+      const handler = sinon.spy();
+      const component = mount(
+        <div>
+          <div>
+            <button data-test-id="click-me" onClick={handler}>
+              Click me!
+            </button>
+          </div>
+        </div>
+      );
+
+      simulate(component).click("[data-test-id=click-me]");
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "click" });
+      });
+    });
+
+    it("accepts event options", () => {
+      const handler = sinon.spy();
+      const component = mount(<button onKeyDown={handler}>Click me!</button>);
+
+      simulate(component).keyDown({
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "keydown", key: "Enter", keyCode: 13, which: 13 });
+      });
+    });
+
+    it("accepts a target selector and event options", () => {
+      const handler = sinon.spy();
+      const component = mount(
+        <div>
+          <div>
+            <button data-test-id="click-me" onKeyDown={handler}>
+              Click me!
+            </button>
+          </div>
+        </div>
+      );
+
+      simulate(component).keyDown("[data-test-id=click-me]", {
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "keydown", key: "Enter", keyCode: 13, which: 13 });
+      });
+    });
+
+    it("handles chaining", () => {
+      const handler = sinon.spy();
+      const component = mount(<button onClick={handler}>Click me!</button>);
+
+      simulate(component)
+        .click()
+        .click();
+
+      expect(handler, "to have calls satisfying", () => {
+        handler({ type: "click" });
+        handler({ type: "click" });
+      });
+    });
+
+    class PeopleList extends Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          name: "",
+          people: []
+        };
+      }
+
+      render() {
+        const { name, people } = this.state;
+
+        return (
+          <div>
+            <ol data-test="people">
+              {people.map((person, i) => <li key={i}>{person}</li>)}
+            </ol>
+
+            <label>
+              Name:
+              <input
+                value={name}
+                onChange={e => this.setState({ name: e.target.value })}
+                data-test="name-input"
+              />
+            </label>
+            <button
+              onClick={() =>
+                this.setState(({ name, people }) => ({
+                  name: "",
+                  people: [...people, name]
+                }))
+              }
+              data-test="add-person"
+            >
+              Add
+            </button>
+          </div>
+        );
+      }
+    }
+
+    it("can be used to interact with a rendered component", () => {
+      const peopleList = mount(<PeopleList />);
+
+      simulate(peopleList)
+        .change("[data-test=name-input]", { value: "Jane Doe" })
+        .click("[data-test=add-person]")
+        .change("[data-test=name-input]", { value: "John Doe" })
+        .click("[data-test=add-person]");
+
+      expect(
+        peopleList,
+        "queried for first",
+        "[data-test=people]",
+        "to satisfy",
+        mount(
+          <ol data-test="people">
+            <li>Jane Doe</li>
+            <li>John Doe</li>
+          </ol>
+        )
+      );
+    });
+
+    it("supports shortcut forms for events", () => {
+      const checkbox = mount(<Checkbox />);
+
+      simulate(checkbox).change();
+
+      expect(checkbox, "to match", ":checked");
+    });
+
+    it("fails if not given more then 2 arguments", () => {
+      const component = mount(<button>Click me!</button>);
+
+      expect(
+        () => {
+          simulate(component, "click", "click");
+        },
+        "to throw",
+        "simulate takes either one or two arguments"
+      );
+    });
+
+    it("fails if it can't find the event target", () => {
+      const peopleList = mount(<PeopleList />);
+
+      expect(
+        () => {
+          simulate(peopleList)
+            .change("[data-test=name-input]", { value: "Jane Doe" })
+            .click("[data-test=add-persons]")
+            .change("[data-test=name-input]", { value: "John Doe" })
+            .click("[data-test=add-person]");
+        },
+        "to throw",
+        `Could not trigger click on '[data-test=add-persons]' in
+<div>
+  <ol data-test="people">
+  </ol>
+  <label>
+    Name:
+    <input data-test="name-input" value="Jane Doe">
+  </label>
+  <button data-test="add-person">Add</button>
+</div>`
+      );
+    });
+  });
+
+  describe("simulate (deprecated API)", () => {
     it("accepts an event type as a string", () => {
       const handler = sinon.spy();
       const component = mount(<button onClick={handler}>Click me!</button>);
@@ -352,18 +546,6 @@ describe("react-dom-testing", () => {
       expect(checkbox, "to match", ":checked");
     });
 
-    it("fails if not given any events", () => {
-      const component = mount(<button>Click me!</button>);
-
-      expect(
-        () => {
-          simulate(component);
-        },
-        "to throw",
-        "simulate takes exactly two arguments"
-      );
-    });
-
     it("fails if not given more then 2 arguments", () => {
       const component = mount(<button>Click me!</button>);
 
@@ -372,7 +554,7 @@ describe("react-dom-testing", () => {
           simulate(component, "click", "click");
         },
         "to throw",
-        "simulate takes exactly two arguments"
+        "simulate takes either one or two arguments"
       );
     });
 
