@@ -38,7 +38,7 @@
     "fake-promise": "2.3.2",
     "fetch-mock": "7.3.9",
     "jest": "23.6.0",
-    "node-fetch": "2.6.0",
+    "node-fetch": "2.6.1",
     "prettier": "1.11.1",
     "prop-types": "15.6.2",
     "react": "16.9.0",
