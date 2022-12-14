@@ -41,8 +41,8 @@
     "node-fetch": "2.6.0",
     "prettier": "1.11.1",
     "prop-types": "15.6.2",
-    "react": "16.9.0",
-    "react-dom": "16.9.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "sinon": "7.2.3",
     "unexpected": "11.0.1",
     "unexpected-dom": "4.16.0",
@@ -50,8 +50,8 @@
     "whatwg-fetch": "3.0.0"
   },
   "peerDependencies": {
-    "react": "^15.5.4 || 16",
-    "react-dom": "^15.5.4 || 16"
+    "react": "^15.5.4 || 16 || 17 || 18",
+    "react-dom": "^15.5.4 || 16 || 17 || 18"
   },
   "dependencies": {
     "domspace": "1.2.2"

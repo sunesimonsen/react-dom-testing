@@ -1,6 +1,24 @@
-import ReactDom from "react-dom";
 import { act, Simulate } from "react-dom/test-utils";
 import domspace from "domspace";
+
+let createRoot;
+try {
+  const ReactDomClient = require("react-dom/client");
+  createRoot = ReactDomClient.createRoot;
+  global.IS_REACT_ACT_ENVIRONMENT = true;
+} catch (e) {
+  const ReactDom = require("react-dom");
+  createRoot = container => {
+    return {
+      render(element) {
+        ReactDom.render(element, container);
+      },
+      unmount() {
+        ReactDom.unmountComponentAtNode(container);
+      }
+    };
+  };
+}
 
 const getContainer = ({ container }) => {
   if (typeof container === "string") {
@@ -14,15 +32,20 @@ const getContainer = ({ container }) => {
   return document.createElement("div");
 };
 
+const rendered = new Set();
+
 export function mount(element, options = {}) {
   const container = getContainer(options);
 
+  const root = createRoot(container);
+  rendered.add(root);
+
   if (act) {
     act(() => {
-      ReactDom.render(element, container);
+      root.render(element);
     });
   } else {
-    ReactDom.render(element, container);
+    root.render(element);
   }
 
   const childNodes = container.childNodes;
@@ -42,8 +65,18 @@ export function mount(element, options = {}) {
   }
 }
 
-export function unmount(element) {
-  ReactDom.unmountComponentAtNode(element.parentNode);
+export function unmount() {
+  for (const root of rendered) {
+    if (act) {
+      act(() => {
+        root.unmount();
+      });
+    } else {
+      root.unmount();
+    }
+  }
+
+  rendered.clear();
 }
 
 export function simulate(rootElement, events) {
