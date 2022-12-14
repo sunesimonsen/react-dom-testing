@@ -1,6 +1,8 @@
 module.exports = {
   extends: ["pretty-standard"],
   globals: {
+    afterAll: true,
+    beforeAll: true,
     jest: false,
     fetch: false
   },
@@ -15,5 +17,5 @@ module.exports = {
         peerDependencies: true
       }
     ]
-  }
+  },
 };

@@ -3,6 +3,8 @@ import * as ReactDomClient from "react-dom/client";
 import { act, Simulate } from "react-dom/test-utils";
 import domspace from "domspace";
 
+import "./setup";
+
 const getContainer = ({ container }) => {
   if (typeof container === "string") {
     return document.createElement(container);
