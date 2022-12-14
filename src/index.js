@@ -21,6 +21,9 @@ function createLegacyRoot(container) {
   return {
     render(element) {
       ReactDom.render(element, container);
+    },
+    unmount() {
+      ReactDom.unmountComponentAtNode(container);
     }
   };
 }
@@ -31,6 +34,9 @@ function createConcurrentRoot(container) {
   return {
     render(element) {
       root.render(element);
+    },
+    unmount() {
+      root.unmount();
     }
   };
 }
