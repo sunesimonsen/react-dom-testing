@@ -1,4 +1,5 @@
 import ReactDom from "react-dom";
+import * as ReactDomClient from "react-dom/client";
 import { act, Simulate } from "react-dom/test-utils";
 import domspace from "domspace";
 
@@ -14,15 +15,39 @@ const getContainer = ({ container }) => {
   return document.createElement("div");
 };
 
+function createLegacyRoot(container) {
+  return {
+    render(element) {
+      ReactDom.render(element, container);
+    }
+  };
+}
+
+function createConcurrentRoot(container) {
+  const root = ReactDomClient.createRoot(container);
+
+  return {
+    render(element) {
+      root.render(element);
+    }
+  };
+}
+
 export function mount(element, options = {}) {
   const container = getContainer(options);
 
+  const createRootFn = options.legacyRoot
+    ? createLegacyRoot
+    : createConcurrentRoot;
+
+  const root = createRootFn(container);
+
   if (act) {
     act(() => {
-      ReactDom.render(element, container);
+      root.render(element);
     });
   } else {
-    ReactDom.render(element, container);
+    root.render(element);
   }
 
   const childNodes = container.childNodes;
