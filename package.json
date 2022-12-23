@@ -44,7 +44,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "sinon": "7.2.3",
-    "unexpected": "11.0.1",
+    "unexpected": "13.1.0",
     "unexpected-dom": "4.16.0",
     "unexpected-sinon": "10.11.0",
     "whatwg-fetch": "3.0.0"
