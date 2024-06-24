@@ -79,9 +79,54 @@ export function unmount() {
   rendered.clear();
 }
 
+class ElementWrapper {
+  constructor(element) {
+    this.element = element;
+  }
+}
+
+Object.keys(Simulate).forEach(eventType => {
+  if (typeof Simulate[eventType] === "function") {
+    // add even method
+    ElementWrapper.prototype[eventType] = function(selector, options) {
+      if (!options && typeof selector !== "string") {
+        options = selector;
+        selector = undefined;
+      }
+
+      const target = selector
+        ? this.element.querySelector(selector)
+        : this.element;
+
+      if (!target) {
+        throw new Error(
+          `Could not trigger ${eventType} on '${selector}' in\n${
+            domspace(this.element.cloneNode(true)).outerHTML
+          }`
+        );
+      }
+
+      if (
+        eventType === "change" &&
+        options &&
+        typeof options.value === "string"
+      ) {
+        target.value = options.value;
+      }
+
+      Simulate[eventType](target, options);
+      return this;
+    };
+  }
+});
+
 export function simulate(rootElement, events) {
-  if (arguments.length !== 2) {
-    throw new Error("simulate takes exactly two arguments");
+  if (arguments.length > 2) {
+    throw new Error("simulate takes either one or two arguments");
+  }
+
+  if (arguments.length === 1) {
+    return new ElementWrapper(rootElement);
   }
 
   []
